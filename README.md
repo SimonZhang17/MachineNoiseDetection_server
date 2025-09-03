@@ -8,7 +8,7 @@
 
 ## ✨ 核心功能
 
-- 🎧 支持WAV[音频格式
+- 🎧 支持WAV音频格式
 - ⚡ 基于MFCC特征提取的音频分析
 - 🤖 使用XGBoost进行异常检测
 - 🔄 提供RESTful API接口
@@ -27,8 +27,8 @@
 
 1. **克隆仓库**
    ```bash
-   git clone https://github.com/yourusername/machine-sound-detection.git
-   cd machine-sound-detection
+   git clone https://github.com/SimonZhang17/MachineNoiseDetection_server.git
+   cd MachineNoiseDetection
    ```
 
 2. **创建并激活虚拟环境**
