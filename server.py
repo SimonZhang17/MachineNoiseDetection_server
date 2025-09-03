@@ -5,20 +5,20 @@ from flask_cors import CORS
 from core.feature_extractor import extract_enhanced_features
 import config
 
-# Initialize Flask app
+# 初始化Flask应用
 app = Flask(__name__)
 CORS(app)
 
-# Configuration
+# 配置
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'wav', 'mp3', 'ogg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5MB max file size
+app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 最大文件大小5MB
 
-# Create uploads directory if it doesn't exist
+# 如果上传目录不存在则创建
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Load the model
+# 加载模型
 try:
     model = joblib.load(config.MODEL_CONFIG['model_path'])
     print(f"Model loaded successfully from {config.MODEL_CONFIG['model_path']}")
@@ -27,6 +27,7 @@ except Exception as e:
     model = None
 
 def allowed_file(filename):
+    # 检查文件扩展名是否在允许的列表中
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -47,23 +48,23 @@ def detect():
         return jsonify({"error": f"File type not allowed. Allowed types: {', '.join(ALLOWED_EXTENSIONS)}"}), 400
     
     try:
-        # Save the uploaded file
+        # 保存上传的文件
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(filepath)
         
-        # Extract features
+        # 提取特征
         features = extract_enhanced_features(filepath)
         
-        # Make prediction
+        # 进行预测
         prediction = model.predict([features])
         confidence = model.predict_proba([features]).max()
 
         print(prediction)
-        # Ensure prediction is binary (0 or 1) and map to class name
+        # 确保预测结果是二进制的(0或1)并映射到类别名称
         prediction_value = int(prediction[0])
         class_name = 'normal' if prediction_value == 1 else 'abnormal'
 
-        # Clean up
+        # 清理临时文件
         if os.path.exists(filepath):
             os.remove(filepath)
             

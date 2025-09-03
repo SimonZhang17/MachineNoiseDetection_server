@@ -10,12 +10,12 @@ from utils.audio_processing import apply_volume_perturbation, add_background_noi
 
 def load_multiple_datasets(dataset_paths):
     """
-    Load audio files from multiple datasets (0db, 6db, -6db), extract features, and generate labels.
+    从多个数据集(0db, 6db, -6db)加载音频文件，提取特征并生成标签。
     """
     features = []
     labels = []
 
-    # Define dataset labels
+    # 定义数据集标签
     dataset_label_map = {'0db': 0, '6db': 1, '-6db': 2}
 
     for dataset_name, dataset_label in dataset_label_map.items():
@@ -37,7 +37,7 @@ def load_multiple_datasets(dataset_paths):
                         print(f"Warning: No files found in {subdir_path}")
                         continue
 
-                    # Binary classification: 0 for abnormal, 1 for normal
+                    # 二分类: 0表示异常, 1表示正常
                     label = 1 if subdir == 'normal' else 0
 
                     for file_name in os.listdir(subdir_path):
@@ -46,23 +46,23 @@ def load_multiple_datasets(dataset_paths):
                             continue
 
                         try:
-                            # Load audio file
+                            # 加载音频文件
                             audio, sr = librosa.load(
                                 file_path,
                                 sr=config.AUDIO_CONFIG['sample_rate'],
                                 duration=config.AUDIO_CONFIG['max_duration']
                             )
-                            # Apply data augmentation
+                            # 应用数据增强
                             audio = apply_volume_perturbation(audio)
                             audio = add_background_noise(audio)
 
-                            # Extract MFCC features
+                            # 提取MFCC特征
                             mfcc = librosa.feature.mfcc(
                                 y=audio,
                                 sr=sr,
                                 n_mfcc=config.FEATURE_CONFIG['n_mfcc']
                             )
-                            # Append the mean of MFCC features and the label
+                            # 添加MFCC特征的均值和标签
                             features.append(np.mean(mfcc, axis=1))
                             labels.append(label)
                         except Exception as e:
@@ -96,16 +96,16 @@ if __name__ == "__main__":
         }
         features, labels = load_multiple_datasets(dataset_paths)
 
-        # Train the model
+        # 训练模型
         model, X_test, y_test = train_enhanced_model(features, labels)
         test_accuracy = model.score(X_test, y_test)
-        print(f"Model trained. Test accuracy: {test_accuracy:.2f}")
+        print(f"模型训练完成。测试准确率: {test_accuracy:.2f}")
         
-        # Save the trained model
+        # 保存训练好的模型
         os.makedirs('models', exist_ok=True)
         import joblib
         joblib.dump(model, config.MODEL_CONFIG['model_path'])
-        print(f"Model saved to {config.MODEL_CONFIG['model_path']}")
+        print(f"模型已保存至 {config.MODEL_CONFIG['model_path']}")
     elif args.command == 'predict':
         predictor = SoundPredictor(config.MODEL_CONFIG['model_path'])
         result = predictor.predict(args.audio)
