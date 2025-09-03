@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="com.obiscr.chatgpt.settings.EasyCodeState">
+    <option name="projectFiles" value="$PROJECT_DIR$/core/__init__.py;D:/PythonProjects/MachineNoiseDetection/core/feature_extractor.py;D:/PythonProjects/MachineNoiseDetection/core/model_trainer.py;D:/PythonProjects/MachineNoiseDetection/core/predictor.py;D:/PythonProjects/MachineNoiseDetection/tests/test_feature_extractor.py;D:/PythonProjects/MachineNoiseDetection/tests/test_predictor.py;D:/PythonProjects/MachineNoiseDetection/utils/__init__.py;D:/PythonProjects/MachineNoiseDetection/utils/audio_processing.py;D:/PythonProjects/MachineNoiseDetection/utils/file_handlers.py;D:/PythonProjects/MachineNoiseDetection/config.py;D:/PythonProjects/MachineNoiseDetection/main.py;D:/PythonProjects/MachineNoiseDetection/server.py;D:/PythonProjects/MachineNoiseDetection/trainModel.py;D:/PythonProjects/MachineNoiseDetection/unzipFiles.py" />
+  </component>
+</project>
